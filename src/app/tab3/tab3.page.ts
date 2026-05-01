@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
+import { Badge } from '@awesome-cordova-plugins/badge/ngx';
 
 @Component({
   selector: 'app-tab3',
@@ -9,19 +10,25 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton } from
   styleUrls: ['tab3.page.scss'],
   imports: [CommonModule, IonButton, FormsModule, IonInput, IonHeader, IonToolbar, IonTitle, IonContent],
 })
-export class Tab3Page {
-  badgeCount: number = 0;
+export class Tab3Page implements OnInit {
+  badgeCount: number = 3;
   messageText: string = 'Testing';
+  badge = new Badge();
+
   constructor() {}
 
-  setBadgeCount(count: number) {
-    this.badgeCount = count;
+  ngOnInit() {
+    this.setBadgeCount();
+  }
+
+  setBadgeCount() {
     // update the browser notification badge count
     if (window && 'navigator' in window && 'setAppBadge' in navigator) {
-      navigator.setAppBadge(count).catch((error) => {
+      navigator.setAppBadge(this.badgeCount).catch((error) => {
         console.error('Failed to set badge count:', error);
       });
     }
+    this.badge.set(this.badgeCount);
     this.sendEvent();
   }
 
@@ -33,6 +40,7 @@ export class Tab3Page {
         console.error('Failed to clear badge count:', error);
       });
     }
+    this.badge.clear();
     this.sendEvent();
   }
 

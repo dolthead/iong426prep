@@ -53,6 +53,10 @@ export class Tab1Page implements OnInit {
     this.recognition.start();
   }
 
+  stop() {
+    this.recognition.stop();
+  }
+
   speak() {
     const synth = window.speechSynthesis;
     const utterThis = new SpeechSynthesisUtterance(this.recognizedText);
